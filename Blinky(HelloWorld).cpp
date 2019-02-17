@@ -29,9 +29,8 @@ int main() {
  
 #define RELAY_BOARD_ADDR (0x1B<<1)
 #define LOOP_WAIT_TIME   2.0
- 
-I2C i2c(PB_9, PB_8);
-//I2C i2c(I2C_SDA, I2C_SCL);
+//I2C i2c(PB_9, PB_8);
+I2C i2c(I2C_SDA, I2C_SCL);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
  
@@ -43,13 +42,12 @@ int main()
     buffer[0] = 0x03;
      
     while (1) {
-        
         pc.printf("wat is het res: %d \r \n",i2c.write(0x1B<<1, buffer, 1, 0));
         wait(1);
-        pc.printf("res 2: %d \r \n",i2c.read(0x1B<<1, buffer2, 1, 0));
+        pc.printf("wat is het res2: %d \r \n",i2c.read(0x1B<<1, buffer2, 1, 0));
         myled = !myled;
         wait(1);
-        pc.printf("Test test 2 %d \r \n ", (int) buffer2[0]);
+        pc.printf("Button pressed %d \r \n ", (int) buffer2[0]);
  
         wait(LOOP_WAIT_TIME);
     }
