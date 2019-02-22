@@ -1,6 +1,10 @@
-BUILD/
+mbed_settings.py
+mbed_settings.pyc
+
 mbed-os/
 mbed_settings.*
 .vscode/
 mbed-os
 .mbed
+
+BUILD/

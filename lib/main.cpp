@@ -1,4 +1,5 @@
 #include "mbed.h"
+#include "MovementID.h"
 #include "QT1070.h"
 #include "TLC59116.h"
 #define LOOP_WAIT_TIME   0.5
@@ -7,8 +8,9 @@ I2C i2c(I2C_SDA, I2C_SCL);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
  
-int main()
-{
+MovementID::MovementID(int pushButton){
+  this->pushButton = pushButton;
+
     QT1070 qt1070(&i2c);
     pc.printf("Chip id = %d \r \n", qt1070.get_chip_id());
     wait(0.5);
@@ -48,4 +50,8 @@ int main()
         pc.printf("Pressed button value = %d \r \n", val);
     }
  
+}
+
+int MovementID::to_string(){
+  return controllergegevens;
 }

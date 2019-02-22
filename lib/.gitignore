@@ -1,0 +1,6 @@
+BUILD/
+mbed-os/
+mbed_settings.*
+.vscode/
+mbed-os
+.mbed
