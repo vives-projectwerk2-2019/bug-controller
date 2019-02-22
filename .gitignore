@@ -1,5 +1,6 @@
 mbed_settings.py
 mbed_settings.pyc
+MovementID_Demo.cpp
 
 mbed-os/
 mbed_settings.*
