@@ -23,6 +23,7 @@ namespace SimpleLoRaWAN
       while(!connected) {
         Thread::wait(100);
       }
+      printf("\r\n Connected! \r\n");
     }
   }
 

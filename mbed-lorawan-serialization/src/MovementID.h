@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include <string>
 #include "QT1070.h"
 
@@ -18,4 +18,4 @@ class MovementID
   //QT1070 qt1070;
 
     
-};
+};*/

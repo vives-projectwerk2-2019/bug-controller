@@ -4,7 +4,7 @@
 ```shell
 git clone git@github.com:vives-projectwerk2-2019/bug-controller.git
 ```
-Vervolgens zal voor de mbed functionaliteit de volgende commando's is de work map moeten uitgevoerd worden:
+for the mbed functionality the following commands will be necessary in the work map of the project:
 ```shell
 mbed new .
 mbed deploy
