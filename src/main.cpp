@@ -42,8 +42,18 @@ int main(void)
     node.send(addon.getMessage(), addon.getLength());
 
   while(true) {
-    dir = direction.get_value();
-    act = action.get_value();
+    if(direction.get_value()>15){
+      dir = 0;
+    }
+    else{
+      dir = direction.get_value();
+    }
+    if(action.get_value() < 16){
+      act = 0;
+    }
+    else{
+      act = action.get_value();
+    }
     LoRaMessage message;
     message.addUint8(dir);
     message.addUint8(act);
