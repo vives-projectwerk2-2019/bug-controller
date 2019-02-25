@@ -22,10 +22,10 @@ Read pushing the capacitive buttons (QT1070).
 Work with i2c the read function will output an integer with which you can determine wich button was pushed. I used Putty to monitor which buttons were pressed.
 
 Values that will be captured when certain buttons ar pressed:
-![alt text](buttonint.jpg "Setup")
+![alt text](images/buttonint.jpg "Setup")
 
 ## Image of the setup
-![alt text](setup.jpg "Setup")
+![alt text](images/setup.jpg "Setup")
 
 
 ## LoRaWAN shield
