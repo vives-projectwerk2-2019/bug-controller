@@ -47,7 +47,7 @@ int main(void)
     LoRaMessage message;
     message.addUint8(dir);
     message.addUint8(act);
-    node.send(message.getMessage(), message.getLength(), '48');
+    node.send(message.getMessage(), message.getLength(), 2);
     
     pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
     
