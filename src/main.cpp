@@ -3,6 +3,7 @@
 #include "LoRaMessage.h"
 #include <string>
 #include "QT1070.h"
+#include "dongles.h"
 
 using namespace SimpleLoRaWAN;
 
@@ -16,19 +17,27 @@ I2C i2c2(PB_14,PB_13);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
 
-Node node(devEui, appEui, appKey);
+
+/*Node node(devEui, appEui, appKey);
 unsigned int dir, act;
-unsigned char portData = 0;
+unsigned char portData = 0;*/
 int main(void)
 {
+  Dongle d(&i2c1);
   pc.baud(115200);
-  
-  pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
+  char help[16] = {};
+  d.write_test();
+  char* test = help;
+  wait(1);
+  d.get_id(test);
+  pc.printf("id: %s",test);
+  //pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
   //int controllergegevens = 0;   //Range:  255 = 1111 1111 = FF 
-                                //        0   = 0000 0000 = 00
+  /*                              //        0   = 0000 0000 = 00
     QT1070 direction(&i2c1);
     QT1070 action(&i2c2);
     pc.printf("Chip id = %d \r \n", direction.get_chip_id());
+    
     wait(0.5);
     unsigned int testId = 156;
     unsigned int add_on = 44;
@@ -40,17 +49,17 @@ int main(void)
     addon.addUint8(add_on2);
     addon.addUint8(add_on3);
     node.send(addon.getMessage(), addon.getLength());
-
+  */
   while(true) {
-    dir = direction.get_value();
-    act = action.get_value();
+    /*dir = direction.get_pressed_key();
+    act = action.get_pressed_key();
     LoRaMessage message;
     message.addUint8(dir);
     message.addUint8(act);
     node.send(message.getMessage(), message.getLength(), 2);
     
     pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
-    
+    */
     wait(3);
   }
 }
