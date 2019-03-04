@@ -18,9 +18,9 @@ Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
 
 
-/*Node node(devEui, appEui, appKey);
+//Node node(devEui, appEui, appKey);
 unsigned int dir, act;
-unsigned char portData = 0;*/
+//unsigned char portData = 0;
 int main(void)
 {
   Dongle d(&i2c1);
@@ -33,12 +33,12 @@ int main(void)
   pc.printf("id: %s",test);
   //pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
   //int controllergegevens = 0;   //Range:  255 = 1111 1111 = FF 
-  /*                              //        0   = 0000 0000 = 00
+                               //        0   = 0000 0000 = 00
     QT1070 direction(&i2c1);
     QT1070 action(&i2c2);
     pc.printf("Chip id = %d \r \n", direction.get_chip_id());
     
-    wait(0.5);
+    /*wait(0.5);
     unsigned int testId = 156;
     unsigned int add_on = 44;
     unsigned int add_on2 = 43;
@@ -51,15 +51,25 @@ int main(void)
     node.send(addon.getMessage(), addon.getLength());
   */
   while(true) {
-    /*dir = direction.get_pressed_key();
-    act = action.get_pressed_key();
-    LoRaMessage message;
+    if(direction.get_pressed_key()>15){
+      dir = 0;
+    }
+    else{
+      dir = direction.get_pressed_key();
+    }
+    if(action.get_pressed_key() < 16){
+      act = 0;
+    }
+    else{
+      act = action.get_pressed_key();
+    }
+    /*LoRaMessage message;
     message.addUint8(dir);
     message.addUint8(act);
     node.send(message.getMessage(), message.getLength(), 2);
-    
-    pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
     */
+    pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
+    
     wait(3);
   }
 }
