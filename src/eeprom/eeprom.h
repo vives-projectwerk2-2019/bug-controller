@@ -1,11 +1,12 @@
 #pragma once
 #include "mbed.h"
-class Dongle{
+class EEPROM{
     public:
-    Dongle(I2C * i2c);
+    EEPROM(I2C * i2c);
 
     public:
     void get_id(char * id);
+    char get_dongle_value();
     void write_test();
 
     private:

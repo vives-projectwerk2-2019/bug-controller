@@ -3,7 +3,8 @@
 #include "LoRaMessage.h"
 #include <string>
 #include "QT1070.h"
-#include "dongles.h"
+#include "eeprom.h"
+#include "PCA9548A.h"
 
 using namespace SimpleLoRaWAN;
 
@@ -18,38 +19,54 @@ Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
 
 
-//Node node(devEui, appEui, appKey);
+Node node(devEui, appEui, appKey);
 unsigned int dir, act;
 //unsigned char portData = 0;
 int main(void)
 {
-  Dongle d(&i2c1);
+  
+  char id[16] = {};
+  char* testid = id;
+
   pc.baud(115200);
-  char help[16] = {};
+  PCA9548A s(&i2c1);
+  s.write_sel(0);
+
+  EEPROM d(&i2c1);
   d.write_test();
-  char* test = help;
   wait(1);
-  d.get_id(test);
-  pc.printf("id: %s",test);
+
+  d.get_id(testid);
+  pc.printf("id: %s",testid);
   //pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
   //int controllergegevens = 0;   //Range:  255 = 1111 1111 = FF 
                                //        0   = 0000 0000 = 00
     QT1070 direction(&i2c1);
     QT1070 action(&i2c2);
-    pc.printf("Chip id = %d \r \n", direction.get_chip_id());
-    
-    /*wait(0.5);
-    unsigned int testId = 156;
-    unsigned int add_on = 44;
-    unsigned int add_on2 = 43;
-    unsigned int add_on3 = 42;
+    pc.printf("Chip id QT1070 = %d \r \n", direction.get_chip_id());
     LoRaMessage addon;
-    addon.addUint8(testId); 
+    for(int i = 0; i<16; i++){
+      unsigned int testId = id[i];
+      addon.addUint8(testId);
+    }
+    wait(0.5);
+    s.write_sel(1);
+    unsigned int add_on = d.get_dongle_value();
+    //unsigned int testId = 156;
+    //unsigned int add_on = 44;
+    s.write_sel(2);
+    //unsigned int add_on2 = 43;
+    unsigned int add_on2 = d.get_dongle_value();
+    s.write_sel(3);
+    //unsigned int add_on3 = 42;
+    unsigned int add_on3 = d.get_dongle_value();
+    //LoRaMessage addon;
+    //addon.addUint8(testId); 
     addon.addUint8(add_on); 
     addon.addUint8(add_on2);
     addon.addUint8(add_on3);
     node.send(addon.getMessage(), addon.getLength());
-  */
+  
   while(true) {
     if(direction.get_pressed_key()>15){
       dir = 0;
@@ -63,11 +80,11 @@ int main(void)
     else{
       act = action.get_pressed_key();
     }
-    /*LoRaMessage message;
+    LoRaMessage message;
     message.addUint8(dir);
     message.addUint8(act);
     node.send(message.getMessage(), message.getLength(), 2);
-    */
+    
     pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
     
     wait(3);
