@@ -44,11 +44,13 @@ int main(void)
     QT1070 direction(&i2c1);
     QT1070 action(&i2c2);
     pc.printf("Chip id QT1070 = %d \r \n", direction.get_chip_id());
-    LoRaMessage addon;
+    LoRaMessage ident, addon;
     for(int i = 0; i<16; i++){
       unsigned int testId = id[i];
-      addon.addUint8(testId);
+      ident.addUint8(testId);
     }
+    node.send(ident.getMessage(), ident.getLength());
+
     wait(0.5);
     s.write_sel(1);
     unsigned int add_on = d.get_dongle_value();
