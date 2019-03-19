@@ -5,7 +5,7 @@ class EEPROM{
     EEPROM(I2C * i2c);
 
     public:
-    void get_id(char * id);
+    void get_id(char * id, unsigned int aantal);
     char get_dongle_value();
     void write_test();
 
