@@ -37,7 +37,7 @@ int main(void)
   EEPROM d(&i2c1);
   wait(1);
   //id opvragen
-  d.get_id(testid);
+  d.get_id(testid,8);
   pc.printf("id: %s",testid);
 
   pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
