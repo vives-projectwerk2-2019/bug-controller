@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "Simple-LoRaWAN.h"
 #include "LoRaMessage.h"
+#include "Array8bits.h"
 #include <string>
 #include "QT1070.h"
 #include "eeprom.h"
@@ -26,7 +27,8 @@ int main(void)
 {
   
   //char id[8] = {};
-  LoRaMessage ident, addon;
+  LoRaMessage ident;
+  Array8Bits addon;
   uint8_t pid[] = {0x00 , 0xFA , 0xFB , 0xE9 , 0x95 , 0x5F , 0xA1 , 0xD6};
   addon.addArray(pid, sizeof(pid));
   //char* testid = id;
