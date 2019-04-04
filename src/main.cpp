@@ -19,7 +19,7 @@ Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
 
 
-//Node node(devEui, appEui, appKey);
+Node node(devEui, appEui, appKey);
 unsigned int dir, act;
 //unsigned char portData = 0;
 int main(void)
@@ -47,14 +47,14 @@ int main(void)
   QT1070 action(&i2c2);
 
   //id en add-on info doorsturen via Lora
-  /*LoRaMessage ident, addon;
+  LoRaMessage ident, addon;
   for(int i = 0; i<sizeof(id); i++){
     unsigned int testId = id[i];
     cout<<id[i]<<"\r \n";
     ident.addUint8(testId);
   }
   node.send(ident.getMessage(), ident.getLength());
-  */
+  
   wait(0.5);
   //s.write_sel(1);
   //unsigned int add_on = d.get_dongle_value();
@@ -68,11 +68,11 @@ int main(void)
   //unsigned int add_on3 = d.get_dongle_value();
   //LoRaMessage addon;
   //addon.addUint8(testId); 
-  /*addon.addUint8(add_on); 
+  addon.addUint8(add_on); 
   addon.addUint8(add_on2);
   addon.addUint8(add_on3);
   node.send(addon.getMessage(), addon.getLength());
-  */
+  
 
  //knoppen inlezen
   while(true) {
@@ -90,11 +90,12 @@ int main(void)
     }
 
     //gegevens doorsturen via LoraWan
-    /*LoRaMessage message;
-    message.addUint8(dir);
-    message.addUint8(act);
-    node.send(message.getMessage(), message.getLength(), 2);
-    */
+    if(dir != 0 && act != 0){
+      LoRaMessage message;
+      message.addUint8(dir);
+      message.addUint8(act);
+      node.send(message.getMessage(), message.getLength(), 2);
+    }
     pc.printf("Message sent. message: %d en %d\r\n",dir,act); 
     
     wait(3);
