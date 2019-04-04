@@ -12,11 +12,13 @@ uint8_t devEui[8] = { 0x00, 0x9E, 0x88, 0x73, 0x27, 0x27, 0xD8, 0x3C };
 uint8_t appEui[8] = { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x01, 0x7E, 0x9E };
 uint8_t appKey[16] = { 0xC5, 0x07, 0xF6, 0xC1, 0x45, 0xA9, 0x2F, 0xA2, 0x0C, 0x8F, 0xF4, 0x30, 0xB3, 0x6D, 0x21, 0x2D };
 
-
 I2C i2c1(I2C_SDA, I2C_SCL);
 I2C i2c2(PB_14,PB_13);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
-DigitalOut myled(LED1);
+DigitalOut myled(PC_8);
+DigitalOut myled2(PC_9);
+DigitalOut myled3(PC_10);
+DigitalOut myled4(LED1);
 
 
 Node node(devEui, appEui, appKey);
@@ -24,7 +26,18 @@ unsigned int dir, act;
 
 int main(void)
 {
-  
+  while(true){
+  myled = 1;
+  myled2 = 1;
+  myled3 = 1;
+  myled4 = 1;
+  wait(0.2);
+  myled = 0;
+  myled2 = 0;
+  myled3 = 0;
+  myled4 = 0;
+  wait(0.2);
+  }
   char id[8] = {};
   char* testid = id;
 
@@ -47,7 +60,7 @@ int main(void)
   LoRaMessage ident, addon;
   for(int i = 0; i<8; i++){
     unsigned int testId = id[i];
-    cout<<id[i]<<"\r \n";
+    //cout<<id[i]<<"\r \n";
     addon.addUint8(testId);
   }
   wait(0.5);
