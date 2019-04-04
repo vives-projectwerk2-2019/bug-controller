@@ -25,8 +25,11 @@ unsigned int dir, act;
 int main(void)
 {
   
-  char id[8] = {};
-  char* testid = id;
+  //char id[8] = {};
+  LoRaMessage ident, addon;
+  uint8_t pid[] = {0x00 , 0xFA , 0xFB , 0xE9 , 0x95 , 0x5F , 0xA1 , 0xD6};
+  addon.addArray(pid, sizeof(pid));
+  //char* testid = id;
 
   pc.baud(115200);
 
@@ -36,35 +39,25 @@ int main(void)
 
   EEPROM d(&i2c1);
   wait(1);
-  d.get_id(testid, 8);
-  pc.printf("id: %s",testid);
+  // d.get_id(testid, 8);
+  // pc.printf("pid: %s",testid);
 
   pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
 
   QT1070 direction(&i2c1);
   QT1070 action(&i2c2);
-
-  LoRaMessage ident, addon;
-  for(int i = 0; i<8; i++){
-    unsigned int testId = id[i];
-    cout<<id[i]<<"\r \n";
-    addon.addUint8(testId);
-  }
+  
   wait(0.5);
   //s.write_sel(1);
-  char add_on[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X07};
-  // s.write_sel(2);
-  for(int i = 0; i<8; i++){
-    addon.addUint8(add_on[i]);
-  }
-  char add_on2[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X00};
-  for(int i = 0; i<8; i++){
-    addon.addUint8(add_on2[i]);
-  }
-  char add_on3[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X01};
-  for(int i = 0; i<8; i++){
-    addon.addUint8(add_on3[i]);
-  }
+  uint8_t addOn1[] = {0x01 , 0xF0 , 0x0F , 0xAA , 0xF0 , 0x0F , 0xAA , 0xF0};
+  addon.addArray(addOn1, sizeof(addOn1));
+
+  uint8_t addOn2[] = {0x01 , 0x0F , 0xAA , 0xF0 , 0x0F , 0xAA , 0xF0 , 0x0F};
+  addon.addArray(addOn2, sizeof(addOn2));
+
+  uint8_t addOn3[] = {0x01 , 0xAA , 0xF0 , 0x0F , 0xAA , 0xF0 , 0x0F , 0xAA};
+  addon.addArray(addOn3, sizeof(addOn3));
+
   node.send(addon.getMessage(), addon.getLength());
   
   while(true) {
