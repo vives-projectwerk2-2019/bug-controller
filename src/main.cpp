@@ -21,7 +21,7 @@ DigitalOut myled(LED1);
 
 Node node(devEui, appEui, appKey);
 unsigned int dir, act;
-//unsigned char portData = 0;
+
 int main(void)
 {
   
@@ -36,45 +36,37 @@ int main(void)
 
   EEPROM d(&i2c1);
   wait(1);
-  //id opvragen
-  d.get_id(testid,8);
+  d.get_id(testid, 8);
   pc.printf("id: %s",testid);
 
   pc.printf("\r\n*** Starting LoRaWAN Shield Example ***\r\n");
 
-  //knoppen instellen
   QT1070 direction(&i2c1);
   QT1070 action(&i2c2);
 
-  //id en add-on info doorsturen via Lora
   LoRaMessage ident, addon;
-  for(int i = 0; i<sizeof(id); i++){
+  for(int i = 0; i<8; i++){
     unsigned int testId = id[i];
     cout<<id[i]<<"\r \n";
-    ident.addUint8(testId);
+    addon.addUint8(testId);
   }
-  node.send(ident.getMessage(), ident.getLength());
-  
   wait(0.5);
   //s.write_sel(1);
-  //unsigned int add_on = d.get_dongle_value();
-  //unsigned int testId = 156;
-  unsigned int add_on = 44;
+  char add_on[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X07};
   // s.write_sel(2);
-  unsigned int add_on2 = 43;
-  //unsigned int add_on2 = d.get_dongle_value();
-  //s.write_sel(3);
-  unsigned int add_on3 = 42;
-  //unsigned int add_on3 = d.get_dongle_value();
-  //LoRaMessage addon;
-  //addon.addUint8(testId); 
-  addon.addUint8(add_on); 
-  addon.addUint8(add_on2);
-  addon.addUint8(add_on3);
+  for(int i = 0; i<8; i++){
+    addon.addUint8(add_on[i]);
+  }
+  char add_on2[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X00};
+  for(int i = 0; i<8; i++){
+    addon.addUint8(add_on2[i]);
+  }
+  char add_on3[] = {0x00, 0x01, 0x02,0x03,0X04,0X05, 0x06, 0X01};
+  for(int i = 0; i<8; i++){
+    addon.addUint8(add_on3[i]);
+  }
   node.send(addon.getMessage(), addon.getLength());
   
-
- //knoppen inlezen
   while(true) {
     if(direction.get_pressed_key()>15){
       dir = 0;
@@ -89,8 +81,7 @@ int main(void)
       act = action.get_pressed_key();
     }
 
-    //gegevens doorsturen via LoraWan
-    if(dir != 0 && act != 0){
+    if(dir != 0 || act !=0){
       LoRaMessage message;
       message.addUint8(dir);
       message.addUint8(act);
