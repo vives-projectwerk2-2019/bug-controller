@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include "mbed.h"
-using namespace std;
 class QT1070{
          
     public:
@@ -14,7 +13,6 @@ class QT1070{
         char read_register(char reg);
 
     private:
-        //int i2cfile; //geen default constructor
         I2C * i2c;
         const int i2cAddress = 0x1B<<1;
 };

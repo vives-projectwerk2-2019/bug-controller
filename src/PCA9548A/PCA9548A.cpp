@@ -35,6 +35,9 @@ void PCA9548A::write_sel(int sel){
     case 7:
         buffer = 0x80;
         break;
+    default:
+        buffer = 0x00;
+        break;
 }
     write_reg(buffer);
 }
