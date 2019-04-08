@@ -20,8 +20,11 @@ Array8Bits& Array8Bits::addUint8(uint16_t value)
 
 Array8Bits& Array8Bits::addArray(uint8_t* value, uint8_t size)
 {
+  this->size = size;
+  std::cout<<"size"<<size<<" ";
   for(int i = 0; i < size; i++){
     addUint8(value[i]);
+    //std::cout<<"value: " <<value[i]<<endl;
   }
   return *this;
 }

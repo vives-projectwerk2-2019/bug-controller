@@ -13,12 +13,13 @@ uint8_t devEui[8] = {0x00, 0x9E, 0x88, 0x73, 0x27, 0x27, 0xD8, 0x3C};
 uint8_t appEui[8] = {0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x01, 0x7E, 0x9E};
 uint8_t appKey[16] = {0xC5, 0x07, 0xF6, 0xC1, 0x45, 0xA9, 0x2F, 0xA2, 0x0C, 0x8F, 0xF4, 0x30, 0xB3, 0x6D, 0x21, 0x2D};
 
-I2C i2c1(PC_1, PC_0); // voor de print zijn deze hier geconnecteerd
+//I2C i2c1(PC_1, PC_0); // voor de print zijn deze hier geconnecteerd
+I2C i2c1(I2C_SDA, I2C_SCL);
 I2C i2c2(PB_14, PB_13);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
 DigitalOut myled(LED1);
 
-Node node(devEui, appEui, appKey);
+//Node node(devEui, appEui, appKey);
 unsigned int dir, act;
 
 int main(void)
@@ -30,7 +31,6 @@ int main(void)
   char *test_add_on = add_on;
   //switch kan nog niet uitgetest worden
   //PCA9548A s(&i2c1);
-  //s.write_sel(0);
   
   EEPROM d(&i2c1);
   wait(1);
@@ -43,14 +43,14 @@ int main(void)
     //s.write_sel(i)
     d.get_id(test_add_on,8);
     pid = (uint8_t *)test_add_on;
-    addon.addArray(pid, sizeof(pid));
+    addon.addArray(pid, 8);
     wait(1);
   }
 
-  node.send(addon.getMessage(), addon.getLength());
+  //node.send(addon.getMessage(), addon.getLength());
 
   QT1070 direction(&i2c1);
-  QT1070 action(&i2c1);
+  QT1070 action(&i2c2);
 
     while (true)
   {
@@ -73,13 +73,13 @@ int main(void)
       act = action.get_pressed_key();
     }
 
-    if (dir != 0 || act != 0)
+    /*if (dir != 0 || act != 0)
     {
       LoRaMessage message;
       message.addUint8(dir);
       message.addUint8(act);
       node.send(message.getMessage(), message.getLength(), 2);
-    }
+    }*/
     pc.printf("Message sent. message: %d en %d\r\n", dir, act);
 
     wait(3);
