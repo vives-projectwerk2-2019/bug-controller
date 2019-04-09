@@ -17,13 +17,16 @@ uint8_t appKey[16] = {0xC5, 0x07, 0xF6, 0xC1, 0x45, 0xA9, 0x2F, 0xA2, 0x0C, 0x8F
 I2C i2c1(I2C_SDA, I2C_SCL);
 I2C i2c2(PB_14, PB_13);
 Serial pc(SERIAL_TX, SERIAL_RX); // tx, rx
-DigitalOut myled(LED1);
+DigitalOut myled(PC_8);
+DigitalOut myled2(PC_9);
+DigitalOut myled3(PC_10);
 
 //Node node(devEui, appEui, appKey);
 unsigned int dir, act;
 
 int main(void)
 {
+  myled = 1;
   pc.baud(115200);
 
   pc.printf("\r\n*** Starting Bug Controller ***\r\n");
@@ -31,7 +34,7 @@ int main(void)
   char *test_add_on = add_on;
   //switch kan nog niet uitgetest worden
   //PCA9548A s(&i2c1);
-  
+
   EEPROM d(&i2c1);
   wait(1);
   Array8Bits addon;
@@ -39,21 +42,24 @@ int main(void)
   //uint8_t pid[] = {0x00 , 0xFA , 0xFB , 0xE9 , 0x95 , 0x5F , 0xA1 , 0xD6};
 
   wait(0.5);
-  for(int i = 2; i<6; i++){
+  myled2 = 1;
+  for (int i = 2; i < 6; i++)
+  {
     //s.write_sel(i)
-    d.get_id(test_add_on,8);
+    d.get_id(test_add_on, 8);
     pid = (uint8_t *)test_add_on;
     addon.addArray(pid, 8);
     wait(1);
   }
-
+  myled2 = 0;
   //node.send(addon.getMessage(), addon.getLength());
 
   QT1070 direction(&i2c1);
   QT1070 action(&i2c2);
 
-    while (true)
+  while (true)
   {
+    myled3 = 1;
     //s.write_sel(0)
     if (direction.get_pressed_key() > 15)
     {
@@ -80,6 +86,8 @@ int main(void)
       message.addUint8(act);
       node.send(message.getMessage(), message.getLength(), 2);
     }*/
+    
+    myled3 = 0;
     pc.printf("Message sent. message: %d en %d\r\n", dir, act);
 
     wait(3);
